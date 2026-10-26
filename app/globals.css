@@ -359,7 +359,7 @@ a {
 .rows-head,
 .row {
   display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1.5fr) 64px;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1.5fr) 64px 104px;
   column-gap: 16px;
   align-items: center;
   padding: 14px 18px;
@@ -556,7 +556,8 @@ a {
     grid-template-areas:
       "name status"
       "role status"
-      "city date";
+      "city date"
+      "action action";
     row-gap: 4px;
     align-items: start;
     padding: 14px 16px;
@@ -582,6 +583,19 @@ a {
 
   .c-date {
     grid-area: date;
+  }
+
+  .c-action {
+    grid-area: action;
+    margin-top: 6px;
+  }
+
+  .c-action:empty {
+    display: none;
+  }
+
+  .act {
+    width: 100%;
   }
 }
 
@@ -683,4 +697,46 @@ button.nav-link {
   margin: 0;
   color: #e39aa1;
   font-size: 14px;
+}
+
+/* ---------- Send test button ---------- */
+
+.act {
+  height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.12s;
+}
+
+.act:hover:not(:disabled) {
+  background: var(--navy-hover);
+}
+
+.act:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.act-quiet {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--muted);
+}
+
+.act-quiet:hover:not(:disabled) {
+  background: var(--raised);
+  color: var(--text);
+}
+
+.act-error {
+  margin: 6px 0 0;
+  color: #e39aa1;
+  font-size: 13px;
 }

@@ -1,4 +1,5 @@
 import StatusBadge from "@/components/StatusBadge";
+import SendTestButton from "@/components/SendTestButton";
 import { formatDate, formatSlot } from "@/lib/format";
 
 export default function CandidateRows({ items }) {
@@ -10,6 +11,7 @@ export default function CandidateRows({ items }) {
         <span>City</span>
         <span>Status</span>
         <span>Applied</span>
+        <span>Action</span>
       </div>
       <ul>
         {items.map((c) => (
@@ -27,6 +29,10 @@ export default function CandidateRows({ items }) {
               ) : null}
             </div>
             <div className="c-date">{formatDate(c.createdAt)}</div>
+            <div className="c-action">
+              {c.status === "scheduled" ? <SendTestButton id={c._id} name={c.name} /> : null}
+              {c.status === "arrived" ? <SendTestButton id={c._id} name={c.name} again /> : null}
+            </div>
           </li>
         ))}
       </ul>
