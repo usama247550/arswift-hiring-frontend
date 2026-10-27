@@ -740,3 +740,75 @@ button.nav-link {
   color: #e39aa1;
   font-size: 13px;
 }
+
+/* ---------- Today's interviews ---------- */
+
+.today {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.today-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto 104px;
+  column-gap: 16px;
+  align-items: center;
+  padding: 14px 18px;
+}
+
+.today-row + .today-row {
+  border-top: 1px solid var(--line);
+}
+
+.today-time {
+  font-weight: 500;
+}
+
+.today-who strong {
+  display: block;
+  font-weight: 500;
+}
+
+.today-who span {
+  display: block;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 819px) {
+  .today-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "time status"
+      "who who"
+      "action action";
+    row-gap: 6px;
+    padding: 14px 16px;
+  }
+
+  .today-time {
+    grid-area: time;
+  }
+
+  .today-status {
+    grid-area: status;
+  }
+
+  .today-who {
+    grid-area: who;
+  }
+
+  .today-action {
+    grid-area: action;
+    margin-top: 4px;
+  }
+
+  .today-action:empty {
+    display: none;
+  }
+}

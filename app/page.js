@@ -2,14 +2,16 @@ import Link from "next/link";
 import { apiGet } from "@/lib/api";
 import { STATUS_ORDER, statusLabel } from "@/lib/status";
 import CandidateRows from "@/components/CandidateRows";
+import TodayList from "@/components/TodayList";
 import Notice from "@/components/Notice";
 
 export const dynamic = "force-dynamic";
 
 export default async function OverviewPage() {
-  const [statsRes, listRes] = await Promise.all([
+  const [statsRes, listRes, todayRes] = await Promise.all([
     apiGet("/api/candidates/stats"),
     apiGet("/api/candidates?limit=6"),
+    apiGet("/api/candidates/today"),
   ]);
 
   const failed = !statsRes.ok || !listRes.ok;
@@ -48,6 +50,15 @@ export default async function OverviewPage() {
               <dd>{stats.byStatus.rejected}</dd>
             </div>
           </dl>
+
+          <section className="block" aria-labelledby="today-h">
+            <h2 id="today-h">Today&apos;s interviews</h2>
+            {!todayRes.ok ? (
+              <p className="muted">Today&apos;s interviews could not be loaded.</p>
+            ) : (
+              <TodayList items={todayRes.data?.items ?? []} />
+            )}
+          </section>
 
           <section className="block" aria-labelledby="stand-h">
             <h2 id="stand-h">Where candidates stand</h2>
