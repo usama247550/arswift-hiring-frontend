@@ -1,23 +1,46 @@
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
-import { STATUS_ORDER, statusLabel } from "@/lib/status";
 import CandidateRows from "@/components/CandidateRows";
+import Pagination from "@/components/Pagination";
+import StatusDonut from "@/components/StatusDonut";
 import TodayList from "@/components/TodayList";
 import Notice from "@/components/Notice";
 
 export const dynamic = "force-dynamic";
 
-export default async function OverviewPage() {
+const PER_PAGE = 15;
+
+export default async function OverviewPage({ searchParams }) {
+  const sp = await searchParams;
+  const asked = parseInt(typeof sp?.page === "string" ? sp.page : "1", 10);
+  const page = Number.isFinite(asked) && asked > 0 ? asked : 1;
+
   const [statsRes, listRes, todayRes] = await Promise.all([
     apiGet("/api/candidates/stats"),
-    apiGet("/api/candidates?limit=6"),
+    apiGet(`/api/candidates?limit=${PER_PAGE}&page=${page}`),
     apiGet("/api/candidates/today"),
   ]);
 
   const failed = !statsRes.ok || !listRes.ok;
   const stats = statsRes.data;
   const latest = listRes.data?.items ?? [];
-  const present = failed ? [] : STATUS_ORDER.filter((s) => stats.byStatus[s] > 0);
+  const pages = listRes.data?.pages ?? 1;
+  const by = stats?.byStatus ?? {};
+
+  const boxes = failed
+    ? []
+    : [
+        ["Applied", stats.total],
+        ["In Faisalabad", stats.faisalabad],
+        ["Not shortlisted", by.rejected ?? 0],
+        ["Interview booked", by.scheduled ?? 0],
+        ["Arrived", by.arrived ?? 0],
+        ["Not interested", by.no_show ?? 0],
+        ["CEO meeting", by.passed ?? 0],
+        ["Not selected", by.failed ?? 0],
+      ];
+
+  const hrefFor = (n) => (n === 1 ? "/#latest" : `/?page=${n}#latest`);
 
   return (
     <div className="page">
@@ -33,22 +56,12 @@ export default async function OverviewPage() {
       ) : (
         <>
           <dl className="figures">
-            <div>
-              <dt>Applied</dt>
-              <dd>{stats.total}</dd>
-            </div>
-            <div>
-              <dt>In Faisalabad</dt>
-              <dd>{stats.faisalabad}</dd>
-            </div>
-            <div>
-              <dt>Interview booked</dt>
-              <dd>{stats.byStatus.scheduled}</dd>
-            </div>
-            <div>
-              <dt>Not shortlisted</dt>
-              <dd>{stats.byStatus.rejected}</dd>
-            </div>
+            {boxes.map(([label, value]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
           </dl>
 
           <section className="block" aria-labelledby="today-h">
@@ -65,29 +78,11 @@ export default async function OverviewPage() {
             {stats.total === 0 ? (
               <p className="muted">Nobody has applied yet.</p>
             ) : (
-              <>
-                <div
-                  className="bar"
-                  role="img"
-                  aria-label={present.map((s) => `${statusLabel(s)}: ${stats.byStatus[s]}`).join(", ")}
-                >
-                  {present.map((s) => (
-                    <span key={s} className={`bar-seg seg-${s}`} style={{ flexGrow: stats.byStatus[s] }} />
-                  ))}
-                </div>
-                <ul className="legend">
-                  {present.map((s) => (
-                    <li key={s}>
-                      <i className={`dot seg-${s}`} />
-                      {statusLabel(s)} <b>{stats.byStatus[s]}</b>
-                    </li>
-                  ))}
-                </ul>
-              </>
+              <StatusDonut byStatus={by} total={stats.total} />
             )}
           </section>
 
-          <section className="block" aria-labelledby="latest-h">
+          <section className="block" id="latest" aria-labelledby="latest-h">
             <div className="block-head">
               <h2 id="latest-h">Latest applications</h2>
               <Link href="/candidates" className="link">
@@ -100,7 +95,10 @@ export default async function OverviewPage() {
                 <p>They show up here as soon as someone submits the application form.</p>
               </div>
             ) : (
-              <CandidateRows items={latest} />
+              <>
+                <CandidateRows items={latest} />
+                <Pagination page={Math.min(page, pages)} pages={pages} hrefFor={hrefFor} />
+              </>
             )}
           </section>
         </>
