@@ -10,6 +10,10 @@ const FILTERS = [
   { key: "new", label: "New" },
   { key: "scheduled", label: "Interview booked" },
   { key: "rejected", label: "Not shortlisted" },
+  { key: "arrived", label: "Arrived" },
+  { key: "no_show", label: "Not interested" },
+  { key: "passed", label: "CEO meeting" },
+  { key: "failed", label: "Not selected" },
 ];
 
 export default async function CandidatesPage({ searchParams }) {

@@ -25,7 +25,7 @@ export default function TodayList({ items }) {
             <StatusBadge status={c.status} />
           </div>
           <div className="today-action">
-            {c.status === "scheduled" ? <SendTestButton id={c._id} name={c.name} /> : null}
+            {c.status === "scheduled" || c.status === "no_show" ? <SendTestButton id={c._id} name={c.name} /> : null}
             {c.status === "arrived" ? <SendTestButton id={c._id} name={c.name} again /> : null}
           </div>
         </li>

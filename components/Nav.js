@@ -39,6 +39,17 @@ const items = [
       </svg>
     ),
   },
+  {
+    href: "/review",
+    label: "Review",
+    icon: (
+      <svg {...svgProps}>
+        <path d="M5 3h7l3 3v11H5z" />
+        <path d="M12 3v3h3" />
+        <path d="M8 11l1.6 1.6L12.5 9.5" />
+      </svg>
+    ),
+  },
 ];
 
 export default function Nav() {
