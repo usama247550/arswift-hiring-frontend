@@ -168,22 +168,14 @@ a {
 .figures {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
+  gap: 16px;
 }
 
 .figures > div {
   padding: 18px 20px;
-  border-left: 1px solid var(--line);
-}
-
-.figures > div:nth-child(4n + 1) {
-  border-left: 0;
-}
-
-.figures > div:nth-child(n + 5) {
-  border-top: 1px solid var(--line);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
 }
 
 .figures dt {
@@ -555,18 +547,7 @@ a {
 
   .figures {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .figures > div:nth-child(odd) {
-    border-left: 0;
-  }
-
-  .figures > div:nth-child(even) {
-    border-left: 1px solid var(--line);
-  }
-
-  .figures > div:nth-child(n + 3) {
-    border-top: 1px solid var(--line);
+    gap: 12px;
   }
 
   .figures dd {
@@ -995,194 +976,13 @@ button.nav-link {
   }
 }
 
-/* ---------- Status chart ---------- */
-
-.stand {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  padding: 24px 28px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-}
-
-.donut {
-  flex: none;
-  width: 176px;
-  height: 176px;
-}
-
-.donut-track {
-  fill: none;
-  stroke: var(--line);
-  stroke-width: 14;
-}
-
-.arc {
-  fill: none;
-  stroke-width: 14;
-}
-
-.arc-new {
-  stroke: #4a6fd6;
-}
-.arc-scheduled {
-  stroke: #4f9d7a;
-}
-.arc-rejected {
-  stroke: #b85a64;
-}
-.arc-arrived {
-  stroke: #39a3b7;
-}
-.arc-no_show {
-  stroke: #c79a4a;
-}
-.arc-passed {
-  stroke: #6aa96a;
-}
-.arc-failed {
-  stroke: #8a5a8f;
-}
-.arc-archived {
-  stroke: #4b5368;
-}
-
-.donut-total {
-  fill: var(--text);
-  font-size: 24px;
-  font-weight: 500;
-}
-
-.donut-sub {
-  fill: var(--muted);
-  font-size: 8.5px;
-}
-
-.key {
-  flex: 1;
-  min-width: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 32px;
-}
-
-.key li {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-}
-
-.key .dot {
-  flex: none;
-  width: 12px;
-  height: 12px;
-  margin-right: 8px;
-  border-radius: 50%;
-}
-
-.key-name {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  color: var(--muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.key b {
-  font-weight: 500;
-}
-
-.key-pct {
-  width: 40px;
-  color: var(--placeholder);
-  font-size: 13px;
-  text-align: right;
-}
-
-/* ---------- Pagination ---------- */
-
-.pager {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 18px;
-}
-
-.pager-nums {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.pager-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--line-strong);
-  border-radius: 6px;
-  color: var(--muted);
-  font-size: 14px;
-  text-decoration: none;
-  transition: background-color 0.12s, color 0.12s;
-}
-
-a.pager-link:hover {
-  background: var(--raised);
-  color: var(--text);
-}
-
-.pager-link[aria-current="page"] {
-  border-color: var(--navy);
-  background: var(--navy);
-  color: #fff;
-}
-
-.pager-off {
-  opacity: 0.4;
-}
-
-.pager-gap {
-  color: var(--muted);
-}
-
-@media (max-width: 819px) {
-  .stand {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 20px;
-    padding: 20px 16px;
-  }
-
-  .donut {
-    align-self: center;
-  }
-
-  .key {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .pager-link {
-    min-width: 34px;
-    padding: 0 10px;
-  }
-}
-
 /* ---------- Where candidates stand (circle chart) ---------- */
 
 .stand {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-  gap: 32px;
+  gap: 40px;
   padding: 24px;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -1191,12 +991,14 @@ a.pager-link:hover {
 
 .donut {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: min(100%, 300px);
+  aspect-ratio: 1;
   margin: 0 auto;
 }
 
 .donut svg {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -1212,7 +1014,7 @@ a.pager-link:hover {
 }
 
 .donut-total b {
-  font-size: 34px;
+  font-size: 44px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -1220,7 +1022,7 @@ a.pager-link:hover {
 
 .donut-total span {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .stand-list {
@@ -1336,8 +1138,12 @@ a.pager-link:hover {
 @media (max-width: 819px) {
   .stand {
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    gap: 24px;
     padding: 18px 16px;
+  }
+
+  .donut {
+    width: min(100%, 260px);
   }
 
   .pager {
