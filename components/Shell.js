@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Nav from "@/components/Nav";
+import { BellIcon } from "@/components/Icons";
 
 const KEY = "arswift_nav_collapsed";
 
@@ -62,22 +64,6 @@ export default function Shell({ children }) {
 
   return (
     <div className={`shell${collapsed ? " is-collapsed" : ""}${ready ? "" : " no-anim"}`}>
-      <header className="topbar">
-        <button
-          type="button"
-          className="burger"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="site-nav"
-          onClick={() => setOpen((current) => !current)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-        <span className="topbar-title">AR Swift Hiring</span>
-      </header>
-
       <div className={`scrim${open ? " is-on" : ""}`} onClick={() => setOpen(false)} aria-hidden="true" />
 
       <Nav
@@ -87,7 +73,33 @@ export default function Shell({ children }) {
         onClose={() => setOpen(false)}
       />
 
-      <main className="main">{children}</main>
+      <div className="col">
+        <header className="topbar">
+          <button
+            type="button"
+            className="burger"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="site-nav"
+            onClick={() => setOpen((current) => !current)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+          <span className="topbar-title">AR Swift Hiring</span>
+          <span className="topbar-gap" />
+          <Link href="/review" className="top-bell" aria-label="Answers to review" title="Answers to review">
+            <BellIcon width={20} height={20} />
+          </Link>
+          <span className="top-user">
+            <span className="top-avatar" aria-hidden="true">AS</span>
+            <span className="top-name">AR Swift</span>
+          </span>
+        </header>
+
+        <main className="main">{children}</main>
+      </div>
     </div>
   );
 }

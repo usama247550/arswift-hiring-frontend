@@ -94,6 +94,15 @@ export default function Nav({ collapsed, open, onToggleCollapsed, onClose }) {
         })}
       </ul>
 
+      <div className="nav-tag" aria-hidden="true">
+        <svg viewBox="0 0 120 90" width="96" height="72" fill="none">
+          <path d="M20 88C8 60 14 30 44 8c6 28 2 56-24 80z" fill="#2a4bb8" opacity=".55" />
+          <path d="M46 88C40 58 58 34 90 26c-2 30-16 52-44 62z" fill="#1d378f" opacity=".7" />
+          <path d="M64 88c-2-22 8-38 30-46 4 22-6 40-30 46z" fill="#3b5fd0" opacity=".45" />
+        </svg>
+        <p>Better People.<br />Brighter Future.</p>
+      </div>
+
       <div className="nav-bottom">
         <button
           type="button"

@@ -1,3 +1,4 @@
+import Avatar from "@/components/Avatar";
 import StatusBadge from "@/components/StatusBadge";
 import SendTestButton from "@/components/SendTestButton";
 import { formatDate, formatSlot } from "@/lib/format";
@@ -17,8 +18,11 @@ export default function CandidateRows({ items }) {
         {items.map((c) => (
           <li className="row" key={c._id}>
             <div className="c-name">
-              <strong>{c.name}</strong>
-              <span>{c.email}</span>
+              <Avatar name={c.name} />
+              <div className="c-text">
+                <strong>{c.name}</strong>
+                <span>{c.email}</span>
+              </div>
             </div>
             <div className="c-role">{c.role}</div>
             <div className="c-city">{c.city}</div>
@@ -32,6 +36,7 @@ export default function CandidateRows({ items }) {
             <div className="c-action">
               {c.status === "scheduled" ? <SendTestButton id={c._id} name={c.name} /> : null}
               {c.status === "arrived" ? <SendTestButton id={c._id} name={c.name} again /> : null}
+              {!["scheduled", "arrived"].includes(c.status) ? <span className="c-none">—</span> : null}
             </div>
           </li>
         ))}

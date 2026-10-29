@@ -5,6 +5,21 @@ import Pagination from "@/components/Pagination";
 import StatusDonut from "@/components/StatusDonut";
 import TodayList from "@/components/TodayList";
 import Notice from "@/components/Notice";
+import {
+  InboxIcon,
+  PinIcon,
+  BanIcon,
+  CalendarIcon,
+  UserCheckIcon,
+  UserMinusIcon,
+  BriefcaseIcon,
+  CrossIcon,
+  ChartIcon,
+  ChevronRightIcon,
+  ArrowRightIcon,
+  UsersIcon,
+} from "@/components/Icons";
+import { STATUS_COLORS } from "@/lib/status";
 
 export const dynamic = "force-dynamic";
 
@@ -30,14 +45,14 @@ export default async function OverviewPage({ searchParams }) {
   const boxes = failed
     ? []
     : [
-        ["Applied", stats.total],
-        ["In Faisalabad", stats.faisalabad],
-        ["Not shortlisted", by.rejected ?? 0],
-        ["Interview booked", by.scheduled ?? 0],
-        ["Arrived", by.arrived ?? 0],
-        ["Not interested", by.no_show ?? 0],
-        ["CEO meeting", by.passed ?? 0],
-        ["Not selected", by.failed ?? 0],
+        ["Applied", stats.total, InboxIcon, "#2f66f0", ""],
+        ["In Faisalabad", stats.faisalabad, PinIcon, "#2fa866", ""],
+        ["Not shortlisted", by.rejected ?? 0, BanIcon, STATUS_COLORS.rejected, "rejected"],
+        ["Interview booked", by.scheduled ?? 0, CalendarIcon, STATUS_COLORS.scheduled, "scheduled"],
+        ["Arrived", by.arrived ?? 0, UserCheckIcon, STATUS_COLORS.arrived, "arrived"],
+        ["Not interested", by.no_show ?? 0, UserMinusIcon, STATUS_COLORS.no_show, "no_show"],
+        ["CEO meeting", by.passed ?? 0, BriefcaseIcon, STATUS_COLORS.passed, "passed"],
+        ["Not selected", by.failed ?? 0, CrossIcon, STATUS_COLORS.failed, "failed"],
       ];
 
   const hrefFor = (n) => (n === 1 ? "/#latest" : `/?page=${n}#latest`);
@@ -56,16 +71,31 @@ export default async function OverviewPage({ searchParams }) {
       ) : (
         <>
           <dl className="figures">
-            {boxes.map(([label, value]) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
+            {boxes.map(([label, value, Icon, color, key], i) => (
+              <div key={label} style={{ "--i": i, "--tint": color }}>
+                <Link href={key ? `/candidates?status=${key}` : "/candidates"} className="fig-link" aria-label={`${label}: ${value}`}>
+                  <span className="fig-icon">
+                    <Icon />
+                  </span>
+                  <span className="fig-text">
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </span>
+                  <ChevronRightIcon className="fig-go" width={16} height={16} />
+                </Link>
               </div>
             ))}
           </dl>
 
           <section className="block" aria-labelledby="today-h">
-            <h2 id="today-h">Today&apos;s interviews</h2>
+            <div className="block-head">
+              <h2 id="today-h">
+                <CalendarIcon className="h-ico" /> Today&apos;s interviews
+              </h2>
+              <Link href="/candidates?status=scheduled" className="link">
+                View all <ArrowRightIcon width={15} height={15} />
+              </Link>
+            </div>
             {!todayRes.ok ? (
               <p className="muted">Today&apos;s interviews could not be loaded.</p>
             ) : (
@@ -74,7 +104,11 @@ export default async function OverviewPage({ searchParams }) {
           </section>
 
           <section className="block" aria-labelledby="stand-h">
-            <h2 id="stand-h">Where candidates stand</h2>
+            <div className="block-head">
+              <h2 id="stand-h">
+                <ChartIcon className="h-ico" /> Where candidates stand
+              </h2>
+            </div>
             {stats.total === 0 ? (
               <p className="muted">Nobody has applied yet.</p>
             ) : (
@@ -84,9 +118,11 @@ export default async function OverviewPage({ searchParams }) {
 
           <section className="block" id="latest" aria-labelledby="latest-h">
             <div className="block-head">
-              <h2 id="latest-h">Latest applications</h2>
+              <h2 id="latest-h">
+                <UsersIcon className="h-ico" /> Latest applications
+              </h2>
               <Link href="/candidates" className="link">
-                See all candidates
+                See all candidates <ArrowRightIcon width={15} height={15} />
               </Link>
             </div>
             {latest.length === 0 ? (

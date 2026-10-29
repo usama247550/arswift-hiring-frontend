@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { sendTest } from "@/app/candidates/actions";
+import { SendIcon } from "@/components/Icons";
 
 export default function SendTestButton({ id, name, again }) {
   const [state, action, pending] = useActionState(sendTest, null);
@@ -15,6 +16,7 @@ export default function SendTestButton({ id, name, again }) {
     >
       <input type="hidden" name="id" value={id} />
       <button type="submit" className={again ? "act act-quiet" : "act"} disabled={pending}>
+        {pending ? null : <SendIcon width={15} height={15} />}
         {pending ? "Sending..." : again ? "Send again" : "Send test"}
       </button>
       {state?.error ? (

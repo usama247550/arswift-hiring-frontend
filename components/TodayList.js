@@ -1,3 +1,4 @@
+import Avatar from "@/components/Avatar";
 import StatusBadge from "@/components/StatusBadge";
 import SendTestButton from "@/components/SendTestButton";
 import { formatTime } from "@/lib/format";
@@ -18,8 +19,11 @@ export default function TodayList({ items }) {
         <li className="today-row" key={c._id}>
           <span className="today-time">{formatTime(c.interviewAt)}</span>
           <div className="today-who">
-            <strong>{c.name}</strong>
-            <span>{c.role}</span>
+            <Avatar name={c.name} />
+            <div className="who-text">
+              <strong>{c.name}</strong>
+              <span>{c.role}</span>
+            </div>
           </div>
           <div className="today-status">
             <StatusBadge status={c.status} />
